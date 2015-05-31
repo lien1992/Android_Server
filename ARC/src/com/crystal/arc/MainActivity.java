@@ -5,12 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,11 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crystal.arc.ui.AboutMeFragment;
-import com.crystal.arc.ui.ServerControlFragment;
-import com.crystal.arc.ui.SettingFragment;
 import com.crystal.arc.ui.SlidingLayout;
-import com.crystal.arc.ui.UserManageFragment;
 import com.crystal.arc.zxing.activity.CaptureActivity;
 
 import de.fun2code.android.pawserver.PawServerActivity;
@@ -41,24 +33,19 @@ import de.fun2code.android.pawserver.util.Utils;
  *
  */
 public class MainActivity extends PawServerActivity implements ServiceListener {
-	public static final int SCAN_RESULT_CODE = 2015;
-	private static String[] menuItems = { "用户管理", "设置", "关于" };
 	private static String tip="请点击按钮启动服务器";
-	private static Context ct;
+	private static final int SCAN_RESULT_CODE = 2015;
+	private String[] menuItems = { "用户管理", "设置", "关于" };
 	
-	private FragmentManager fragmentManager;  
-	private ServerControlFragment serverControlFragment;
-	private UserManageFragment userManageFragment;
-	private SettingFragment settingFragment;
-	private AboutMeFragment aboutMeFragment;
-	
+	private static Activity ct;
 	private SlidingLayout slidingLayout;
 	private LinearLayout mainLayout;
 	private ListView menuList;
-
+	private TextView viewUrl;
+	private Button serverSwitch;
+	private Button qrScan;
+	
 	private ArrayAdapter<String> menuListAdapter;
-	
-	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,18 +64,14 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 		calledFromRuntime = true;
 
 		super.onCreate(savedInstanceState);
+		ct=this;
 		setContentView(R.layout.main);
-		ct=this.getApplicationContext();
-		fragmentManager=((FragmentActivity)ct).getSupportFragmentManager();
-		FragmentTransaction ft = fragmentManager.beginTransaction();
-		serverControlFragment=new ServerControlFragment();
-		ft.replace(R.id.main_layout,serverControlFragment);
-		ft.commit();
-		serverControlFragment.setUrl(tip);
-
 		slidingLayout = (SlidingLayout) findViewById(R.id.slidingLayout);
 		mainLayout=(LinearLayout) findViewById(R.id.main_layout);
 		menuList=(ListView) findViewById(R.id.menulist);
+		viewUrl = (TextView)this.findViewById(R.id.url);
+		serverSwitch=(Button) this.findViewById(R.id.server_switch);
+		qrScan=(Button) this.findViewById(R.id.scan);
 		
 		mainLayout.setClickable(true);
 		slidingLayout.setScrollEvent(mainLayout);
@@ -98,85 +81,42 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 		menuList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				switch (position) {
-				case 0:
-					setSelect(0);
-					break;
-				case 1:
-					setSelect(1);
-					break;
-				case 2:
-					setSelect(2);
-					break;
-				case 3:
-					setSelect(3);
-					break;
+			public void onItemClick(AdapterView<?> parent,
+					View view, int position, long id) {
+				switch(position){
+					case 0:break;
+					case 1:break;
+					case 2:break;
 				}
+			}
+		});
+		
+		viewUrl.setText(tip);
+		serverSwitch.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View paramView) {
+				Log.d(TAG, ""+ServerService.isRunning());
+				if(ServerService.isRunning()){
+					stopService();
+				}else{
+					startService();
+				}
+			}
+		});
+		qrScan.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View paramView) {
+				Intent intent = new Intent(ct,
+                        CaptureActivity.class);
+				ct.startActivityForResult(intent, SCAN_RESULT_CODE);
 			}
 		});
 		checkInstallation();
 		messageHandler = new MessageHandler(this);
 		ServerService.setActivityHandler(messageHandler);
 		ServerService.setActivity(this);
-	}
-
-	protected void setSelect(int index) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();  
-        hideFragments(transaction);  
-        switch (index) {  
-        case 0:  
-            if (serverControlFragment == null) {  
-            	serverControlFragment = new ServerControlFragment();  
-                transaction.add(R.id.main_layout, serverControlFragment);  
-            } else {  
-                transaction.show(serverControlFragment);  
-            }  
-            break;  
-        case 1:  
-            if (userManageFragment == null) {  
-            	userManageFragment = new UserManageFragment();  
-                transaction.add(R.id.main_layout, userManageFragment);  
-            } else {  
-                transaction.show(userManageFragment);  
-            }  
-            break;  
-        case 2:   
-            if (settingFragment == null) {  
-            	settingFragment = new SettingFragment();  
-                transaction.add(R.id.main_layout, settingFragment);  
-            } else {  
-                transaction.show(settingFragment);  
-            }  
-            break;  
-        case 3:  
-        default:  
-            if (aboutMeFragment == null) {  
-            	aboutMeFragment = new AboutMeFragment();  
-                transaction.add(R.id.main_layout, aboutMeFragment);  
-            } else {  
-                transaction.show(aboutMeFragment);  
-            }  
-            break;  
-        }  
-        transaction.commit(); 
-        slidingLayout.scrollToRightLayout();
-	}
-
-	private void hideFragments(FragmentTransaction transaction) {
-		if (serverControlFragment != null) {  
-            transaction.hide(serverControlFragment);  
-        }  
-        if (userManageFragment != null) {  
-            transaction.hide(userManageFragment);  
-        }  
-        if (settingFragment != null) {  
-            transaction.hide(settingFragment);  
-        }  
-        if (aboutMeFragment != null) {  
-            transaction.hide(aboutMeFragment);  
-        }  
 	}
 
 	@Override
@@ -228,9 +168,9 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					serverControlFragment.switchButton(true);
-					serverControlFragment.setUrl("请在浏览器中访问下列地址：\n"+url);
-					serverControlFragment.switchQRScan(true);
+					serverSwitch.setBackgroundResource(R.drawable.buttonon);
+					viewUrl.setText("请在浏览器中访问下列地址：\n"+url);
+					qrScan.setVisibility(View.VISIBLE);
 				}
 			});
 			
@@ -239,7 +179,7 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					serverControlFragment.setUrl("服务器启动失败，请重启应用后重试！\n");
+					viewUrl.setText("服务器启动失败，请重启应用后重试！\n");
 				}
 			});
 		}
@@ -248,9 +188,9 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 	
 	@Override
 	public void onServiceStop(boolean success) {
-		serverControlFragment.switchButton(false);
-		serverControlFragment.setUrl(tip);
-		serverControlFragment.switchQRScan(false);
+		serverSwitch.setBackgroundResource(R.drawable.buttonooff);
+		viewUrl.setText(tip);
+		qrScan.setVisibility(View.INVISIBLE);
 	}
 	
 	private void checkInstallation() {
