@@ -60,12 +60,9 @@ public final class ViewfinderView extends View {
 	private Collection<ResultPoint> possibleResultPoints;
 	private Collection<ResultPoint> lastPossibleResultPoints;
 
-	// This constructor is used when the class is built from an XML resource.
 	public ViewfinderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-
-		// Initialize these once for performance rather than calling them every
-		// time in onDraw().
+		
 		paint = new Paint();
 		Resources resources = getResources();
 		maskColor = resources.getColor(R.color.viewfinder_mask);
