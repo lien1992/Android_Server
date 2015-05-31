@@ -16,7 +16,6 @@ public class CameraTest {
         new Thread(){
             @Override
             public void run() {
-                // TODO Auto-generated method stub
                 super.run();
                 Log.e(TAG, "保存图片");
                 File f = new File("/sdcard/test/test"+index+".png");
