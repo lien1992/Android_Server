@@ -22,48 +22,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-/**
- * 主要用于相机的的自动对焦操作的处理类
- */
 final class AutoFocusCallback implements Camera.AutoFocusCallback {
 
-    /**
-     * 主要用于输出日志的tag
-     */
     private static final String TAG = "AutoFocusCallback";
-
-    /**
-     * 对焦时间
-     */
     private static final long AUTOFOCUS_INTERVAL_MS = 1500L;
-
-    /**
-     * 自动对焦的handler
-     */
     private Handler autoFocusHandler;
-
-    /**
-     * 用于自动对焦的message
-     */
     private int autoFocusMessage;
 
-    /**
-     * 用于设置消息的监听
-     *
-     * @param autoFocusHandler 自动对焦的handler
-     * @param autoFocusMessage 自动对焦的message
-     */
     void setHandler(Handler autoFocusHandler, int autoFocusMessage) {
         this.autoFocusHandler = autoFocusHandler;
         this.autoFocusMessage = autoFocusMessage;
     }
 
-    /**
-     * 执行自动对焦
-     *
-     * @param success 是否成功
-     * @param camera  相机对象
-     */
     public void onAutoFocus(boolean success, Camera camera) {
         if (autoFocusHandler != null) {
             Message message = autoFocusHandler.obtainMessage(autoFocusMessage, success);

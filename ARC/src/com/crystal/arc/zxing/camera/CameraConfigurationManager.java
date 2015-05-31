@@ -183,25 +183,4 @@ final class CameraConfigurationManager {
         screenResolution.x=display.getWidth();
         screenResolution.y=display.getHeight();
     }
-
-    /*
-   private void setSharpness(Camera.Parameters parameters) {
-
-     int desiredSharpness = DESIRED_SHARPNESS;
-
-     String maxSharpnessString = parameters.get("sharpness-max");
-     if (maxSharpnessString != null) {
-       try {
-         int maxSharpness = Integer.parseInt(maxSharpnessString);
-         if (desiredSharpness > maxSharpness) {
-           desiredSharpness = maxSharpness;
-         }
-       } catch (NumberFormatException nfe) {
-         Log.w(TAG, "Bad sharpness-max: " + maxSharpnessString);
-       }
-     }
-
-     parameters.set("sharpness", desiredSharpness);
-   }
-    */
 }

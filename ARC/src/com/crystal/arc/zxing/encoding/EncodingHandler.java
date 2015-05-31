@@ -11,11 +11,6 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-/**
- * 生成二维码
- * @author zhangchen-xy@360.cn
- * @since 2014-2-7
- */
 public final class EncodingHandler {
 	private static final int BLACK = 0xff000000;
 	
