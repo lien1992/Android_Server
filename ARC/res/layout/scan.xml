@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/camera_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/camera_logo"
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/camera_error"
+            android:layout_marginTop="30dp" 
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/camera_warn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"  
+            android:layout_below="@+id/camera_logo"
+            android:layout_marginTop="10dp"
+            android:text="警告"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/camera_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/camera_warn"
+            android:layout_marginTop="20dp"
+            android:layout_alignLeft="@+id/camera_warn"
+            android:layout_marginLeft="-70dp"
+            android:text="提示"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/camera_tip"
+            android:layout_marginTop="10dp"
+            android:layout_alignLeft="@+id/camera_tip"
+            android:lineSpacingExtra="10dp"
+            android:text="请重启应用后重试"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+    
+    <FrameLayout android:id="@+id/camera_normal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+       <SurfaceView android:id="@+id/preview_view"
+                 android:layout_width="fill_parent"
+                 android:layout_gravity="center"
+                 android:layout_height="fill_parent"
+                 android:layout_centerInParent="true"/>
+
+	   <com.crystal.arc.zxing.view.ViewfinderView
+	           android:id="@+id/viewfinder_view"
+	           android:layout_width="fill_parent"
+	           android:layout_height="fill_parent"
+	           android:background="#00000000"/>
+
+    </FrameLayout>
+</FrameLayout>
