@@ -10,6 +10,6 @@ public class AboutMeActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.about_me);
+		setContentView(R.layout.about_me);
 	}
 }

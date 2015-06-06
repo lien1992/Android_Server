@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Android远程控制系统</string>
+    <string name="package_name">com.crystal.arc</string>
 </resources>

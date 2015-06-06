@@ -19,7 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crystal.arc.ui.AboutMeActivity;
+import com.crystal.arc.ui.SettingActivity;
 import com.crystal.arc.ui.SlidingLayout;
+import com.crystal.arc.ui.UserManageActivity;
 import com.crystal.arc.zxing.activity.CaptureActivity;
 
 import de.fun2code.android.pawserver.PawServerActivity;
@@ -35,7 +38,7 @@ import de.fun2code.android.pawserver.util.Utils;
 public class MainActivity extends PawServerActivity implements ServiceListener {
 	private static String tip="请点击按钮启动服务器";
 	private static final int SCAN_RESULT_CODE = 2015;
-	private String[] menuItems = { "用户管理", "设置", "关于" };
+	private static String[] menuItems = { "用户管理", "设置", "关于" };
 	
 	private static Activity ct;
 	private SlidingLayout slidingLayout;
@@ -83,11 +86,19 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent,
 					View view, int position, long id) {
+				Intent intent=null;
 				switch(position){
-					case 0:break;
-					case 1:break;
-					case 2:break;
+					case 0:
+						intent = new Intent(ct,UserManageActivity.class);
+						break;
+					case 1:
+						intent = new Intent(ct,SettingActivity.class);
+						break;
+					case 2:
+						intent = new Intent(ct,AboutMeActivity.class);
+						break;
 				}
+				ct.startActivity(intent);
 			}
 		});
 		
@@ -123,6 +134,11 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 	public void onResume() {
 		super.onResume();
 		ServerService.registerServiceListener(this);
+		if(ServerService.isRunning()){
+			serverSwitch.setBackgroundResource(R.drawable.buttonooff);
+		}else{
+			serverSwitch.setBackgroundResource(R.drawable.buttonon);
+		}
 	}
 
 	@Override
@@ -168,7 +184,7 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					serverSwitch.setBackgroundResource(R.drawable.buttonon);
+					serverSwitch.setBackgroundResource(R.drawable.buttonooff);
 					viewUrl.setText("请在浏览器中访问下列地址：\n"+url);
 					qrScan.setVisibility(View.VISIBLE);
 				}
@@ -188,7 +204,7 @@ public class MainActivity extends PawServerActivity implements ServiceListener {
 	
 	@Override
 	public void onServiceStop(boolean success) {
-		serverSwitch.setBackgroundResource(R.drawable.buttonooff);
+		serverSwitch.setBackgroundResource(R.drawable.buttonon);
 		viewUrl.setText(tip);
 		qrScan.setVisibility(View.INVISIBLE);
 	}

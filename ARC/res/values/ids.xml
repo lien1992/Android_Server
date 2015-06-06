@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+<!-- 二维码扫描 -->
     <item name="quit" type="id"/>
     <item name="decode" type="id"/>
     <item name="decode_failed" type="id"/>
@@ -11,5 +11,10 @@
     <item name="auto_focus" type="id"/>
     <item name="restart_preview" type="id"/>
     <item name="launch_product_query" type="id"/>
-
+    
+<!-- 数据库操作-->
+	<item name="user_list" type="id"/>
+    <item name="user_add" type="id"/>
+    <item name="user_delete" type="id"/>
+    <item name="user_modify" type="id"/>
 </resources>
